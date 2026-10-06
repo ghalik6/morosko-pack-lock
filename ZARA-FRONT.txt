@@ -1,0 +1,121 @@
+MOROSKO — read this once, then build
+
+There is no account to log into.
+There is no AI dashboard.
+Do not ask for a login again.
+
+The photos are made on our side. You build one website page.
+You call 3 URLs. You show what comes back.
+Your own hosting account is the right one. Use it.
+
+WHAT DONE LOOKS LIKE
+One desktop page. Three columns.
+Left: pick a piece, pick one background, then a model OR a setting.
+Center: five photos.
+Right: color, price in euros, material, size, then a button for the site text.
+
+Open this and copy the result, not a new design:
+https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/index.html
+
+RULE
+One background for all five photos.
+Default is Nacre #F4EFE6.
+If the user picks another background, it applies to the whole pack, not to one photo.
+Bleu clair #E4EDF8. Cedre #1F3D36. Blanc #F7F7F5. Pierre #E6E1D8.
+
+Page background #F4EFE6. Text #161616. Button #163A7A.
+Titles in Fraunces. Everything else in Inter.
+Button and field labels stay in French, exactly as written below.
+
+THE 3 CALLS
+
+1. Page opens
+GET /api/vitrine
+You fill the piece dropdown.
+You show how many packs are left today: the number "reste".
+
+2. User clicks "Faire les 5 photos"
+POST /api/pack?sku=cabas-cognac&fond=F1
+Body = the photo file, raw bytes.
+You replace the center with the 5 image URLs from the response.
+All 5 stay on the same background.
+
+3. User clicks "Mots pour le site"
+POST /api/fiche
+Send sku, couleur, prix, matiere, taille.
+Only if prix is a number in euros. If not, show: Prix en euros manquant.
+You display title, meta and alts. You do not write that text.
+
+WHO WEARS IT
+The field "scene" decides. You do not decide.
+scene = modele means clothes or shoes. Show: Yazid, Nour, Leila, Lina.
+scene = table means a bag or an object. Show: Table, Pierre, Atelier.
+Never show a person for a bag, a box or a bowl.
+
+VIEWS
+Bag: face, three-quarter, material, side, handles.
+Clothes: piece, three-quarter, material, worn, back.
+
+If reste is 0, the photo button is off.
+Text: Limite du jour atteinte.
+You do not invent this number. It comes from the API.
+
+LABELS, COPY THEM
+Pièce
+Fond
+Faire les 5 photos
+Couleur
+Prix €
+Matière
+Taille
+Mots pour le site
+
+Until I send the real base URL, use the JSON below as the API.
+Base for the sample images:
+https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/
+
+GET /api/vitrine
+{
+  "reste": 7,
+  "items": [
+    {
+      "sku": "cabas-cognac",
+      "label": "Cabas cognac",
+      "prix": 220,
+      "couleur": "Cognac",
+      "matiere": "Cuir",
+      "taille": "",
+      "famille": "sac",
+      "scene": "table",
+      "pack": ["face", "trois-quarts", "matiere", "profil", "anses"]
+    }
+  ]
+}
+
+POST /api/pack
+{
+  "fond": "F1",
+  "reste": 6,
+  "photos": [
+    { "id": "01-face", "src": "https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/01-face.jpg" },
+    { "id": "02-trois-quarts", "src": "https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/02-trois-quarts.jpg" },
+    { "id": "03-matiere", "src": "https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/03-matiere.jpg" },
+    { "id": "04-profil", "src": "https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/04-profil.jpg" },
+    { "id": "05-anses", "src": "https://cdn.jsdelivr.net/gh/ghalik6/morosko-pack-lock@main/05-anses.jpg" }
+  ]
+}
+
+POST /api/fiche
+Send:
+{ "sku": "cabas-cognac", "couleur": "Cognac", "prix": 220, "matiere": "Cuir", "taille": "" }
+
+Show:
+{
+  "title": "Cabas cognac",
+  "meta": "Cabas cognac. Cuir. 220 EUR.",
+  "alts": ["Cabas cognac, face", "Cabas cognac, three-quarter", "Cabas cognac, material", "Cabas cognac, side", "Cabas cognac, handles"]
+}
+
+TIME
+Two days. Build this page. Nothing else.
+No new visual ideas. No AI account. No image model on your side.
